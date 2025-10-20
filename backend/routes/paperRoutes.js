@@ -35,30 +35,43 @@ router.get('/generate', auth, async (req, res) => {
   if (!allSubmitted) return res.status(400).json({ message: 'All teachers must submit first' });
 
   const allQuestions = await Question.find({});
-  // Sections:
-  // A: 10 questions x 2 marks = 20
-  // B: 3 questions each made of (5+5+2) = total 10 each -> so pick three questions that sum to 10 but we will accept questions with marks 5,5,2 separately
-  // For simplicity we'll pick:
-  const sectionA = allQuestions.filter(q => q.marks === 2).slice(0,10);
-  // For B, try to find triples 5,5,2 per question (we'll assemble as groups)
-  const fives = allQuestions.filter(q => q.marks === 5);
-  const twos = allQuestions.filter(q => q.marks === 2 && !sectionA.includes(q)); // remaining 2-mark
-  // Build three B items
-  const sectionB = [];
-  for (let i=0;i<3;i++){
-    const a = fives[i*2];
-    const b = fives[i*2+1];
-    const c = twos[i];
-    if (a && b && c) sectionB.push([a,b,c]);
-  }
-  // Section C: 3 questions each made of two 5-mark parts (we can group pairs of 5s)
-  const sectionC = [];
-  const start = 6; // after using some fives above (very naive)
-  for (let i=0;i<3;i++){
-    const x = fives[start + i*2];
-    const y = fives[start + i*2 +1];
-    if (x && y) sectionC.push([x,y]);
-  }
+  // Helper function to get random items from an array
+function getRandomItems(arr, count) {
+  const shuffled = arr.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
+// Separate questions by marks
+const twoMarkQs = allQuestions.filter(q => q.marks === 2);
+const fiveMarkQs = allQuestions.filter(q => q.marks === 5);
+
+// --- SECTION A: 10 random 2-mark questions ---
+const sectionA = getRandomItems(twoMarkQs, 10);
+
+// --- SECTION B: 3 questions (each 5+5+2 marks) ---
+const sectionB = [];
+const usedFivesB = getRandomItems(fiveMarkQs, 6); // need 6 five-mark qs
+const remainingTwos = twoMarkQs.filter(q => !sectionA.includes(q));
+const usedTwosB = getRandomItems(remainingTwos, 3); // need 3 twos
+
+for (let i = 0; i < 3; i++) {
+  const group = [
+    usedFivesB[i * 2],
+    usedFivesB[i * 2 + 1],
+    usedTwosB[i]
+  ].filter(Boolean);
+  if (group.length === 3) sectionB.push(group);
+}
+
+// --- SECTION C: 3 questions (each 5+5 marks) ---
+const remainingFives = fiveMarkQs.filter(q => !usedFivesB.includes(q));
+const usedFivesC = getRandomItems(remainingFives, 6); // need 6 five-mark qs
+const sectionC = [];
+for (let i = 0; i < 3; i++) {
+  const group = [usedFivesC[i * 2], usedFivesC[i * 2 + 1]].filter(Boolean);
+  if (group.length === 2) sectionC.push(group);
+}
+
 
   // Build a simple HTML view
   let html = '<!doctype html><html><head><meta charset="utf-8"><title>Question Paper</title></head><body>';
