@@ -28,8 +28,8 @@ export default function QuestionForm({ token, onSaved, onCheck }){
         <div className="mb-2 d-flex gap-2">
           <select className="form-select" value={marks} onChange={e=>setMarks(e.target.value)}>
             <option value="2">2 marks</option>
+            <option value="3">3 marks</option>
             <option value="5">5 marks</option>
-            <option value="10">10 marks</option>
           </select>
           <select className="form-select" value={section} onChange={e=>setSection(e.target.value)}>
             <option value="A">Section A</option>
