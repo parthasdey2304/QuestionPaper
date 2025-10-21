@@ -48,20 +48,24 @@ const fiveMarkQs = allQuestions.filter(q => q.marks === 5);
 // --- SECTION A: 10 random 2-mark questions ---
 const sectionA = getRandomItems(twoMarkQs, 10);
 
-// --- SECTION B: 3 questions (each 5+5+2 marks) ---
+// --- SECTION B: 3 questions (each 5+3+2 marks) ---
 const sectionB = [];
-const usedFivesB = getRandomItems(fiveMarkQs, 6); // need 6 five-mark qs
+
+const threeMarkQs = allQuestions.filter(q => q.marks === 3);
+const usedFivesB = getRandomItems(fiveMarkQs, 3);  // 3 five-mark questions
+const usedThreesB = getRandomItems(threeMarkQs, 3); // 3 three-mark questions
 const remainingTwos = twoMarkQs.filter(q => !sectionA.includes(q));
-const usedTwosB = getRandomItems(remainingTwos, 3); // need 3 twos
+const usedTwosB = getRandomItems(remainingTwos, 3); // 3 two-mark questions
 
 for (let i = 0; i < 3; i++) {
   const group = [
-    usedFivesB[i * 2],
-    usedFivesB[i * 2 + 1],
+    usedFivesB[i],
+    usedThreesB[i],
     usedTwosB[i]
   ].filter(Boolean);
   if (group.length === 3) sectionB.push(group);
 }
+
 
 // --- SECTION C: 3 questions (each 5+5 marks) ---
 const remainingFives = fiveMarkQs.filter(q => !usedFivesB.includes(q));
@@ -78,7 +82,7 @@ for (let i = 0; i < 3; i++) {
   html += '<h2>SECTION A (20 marks) - 10 questions x 2 marks</h2><ol>';
   sectionA.forEach(q=> html += `<li>${q.questionText} <strong>(${q.marks}m)</strong></li>`);
   html += '</ol>';
-  html += '<h2>SECTION B (30 marks) - 3 questions (5+5+2 each)</h2><ol>';
+  html += '<h2>SECTION B (30 marks) - 3 questions (5+3+2 each)</h2><ol>';
   sectionB.forEach((grp, idx)=> {
     html += `<li>Q${idx+1}:<ul>`;
     grp.forEach(g=> html += `<li>${g.questionText} (${g.marks}m)</li>`);
