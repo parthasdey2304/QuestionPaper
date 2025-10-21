@@ -34,7 +34,7 @@ router.get('/generate', auth, async (req, res) => {
   const allSubmitted = teachers.every(t => t.hasSubmitted);
   if (!allSubmitted) return res.status(400).json({ message: 'All teachers must submit first' });
 
-  const allQuestions = await Question.find({});
+  const allQuestions = await Question.find({}).populate('teacherID', 'name');;
   // Helper function to get random items from an array
 function getRandomItems(arr, count) {
   const shuffled = arr.sort(() => 0.5 - Math.random());
@@ -80,19 +80,19 @@ for (let i = 0; i < 3; i++) {
   // Build a simple HTML view
   let html = '<!doctype html><html><head><meta charset="utf-8"><title>Question Paper</title></head><body>';
   html += '<h2>SECTION A (20 marks) - 10 questions x 2 marks</h2><ol>';
-  sectionA.forEach(q=> html += `<li>${q.questionText} <strong>(${q.marks}m)</strong></li>`);
+  sectionA.forEach(q=> html += `<li>${q.questionText} <strong>(${q.marks}m) (${q.teacherID})</strong></li>`);
   html += '</ol>';
   html += '<h2>SECTION B (30 marks) - 3 questions (5+3+2 each)</h2><ol>';
   sectionB.forEach((grp, idx)=> {
     html += `<li>Q${idx+1}:<ul>`;
-    grp.forEach(g=> html += `<li>${g.questionText} (${g.marks}m)</li>`);
+    grp.forEach(g=> html += `<li>${g.questionText} (${g.marks}m) (${g.teacherID})</li>`);
     html += '</ul></li>';
   });
   html += '</ol>';
   html += '<h2>SECTION C (30 marks) - 3 questions (5+5 each)</h2><ol>';
   sectionC.forEach((grp, idx)=> {
     html += `<li>Q${idx+1}:<ul>`;
-    grp.forEach(g=> html += `<li>${g.questionText} (${g.marks}m)</li>`);
+    grp.forEach(g=> html += `<li>${g.questionText} (${g.marks}m) (${g.teacherID})</li>`);
     html += '</ul></li>';
   });
   html += '</ol></body></html>';
