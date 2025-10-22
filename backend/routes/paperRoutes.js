@@ -45,6 +45,18 @@ function getRandomItems(arr, count) {
 const twoMarkQs = allQuestions.filter(q => q.marks === 2);
 const fiveMarkQs = allQuestions.filter(q => q.marks === 5);
 
+
+ function getCO(teacherEmail) {
+    switch (teacherEmail) {
+      case 'teacher1@gmail.com': return 'CO1';
+      case 'teacher2@gmail.com': return 'CO2';
+      case 'teacher3@gmail.com': return 'CO3';
+      case 'teacher4@gmail.com': return 'CO4';
+      case 'teacher5@gmail.com': return 'CO5';
+      default: return 'CO?';
+    }
+  }
+
 // --- SECTION A: 10 random 2-mark questions ---
 const sectionA = getRandomItems(twoMarkQs, 10);
 
@@ -79,23 +91,33 @@ for (let i = 0; i < 3; i++) {
 
   // Build a simple HTML view
   let html = '<!doctype html><html><head><meta charset="utf-8"><title>Question Paper</title></head><body>';
-  html += '<h2>SECTION A (20 marks) - 10 questions x 2 marks</h2><ol>';
-  sectionA.forEach(q=> html += `<li>${q.questionText} <strong>(${q.marks}m) (${q.teacherID})</strong></li>`);
+    html += '<h2>SECTION A (20 marks) - 10 questions x 2 marks</h2><ol>';
+  sectionA.forEach(q => {
+    const co = getCO(q.teacherID);
+    html += `<li>${q.questionText} <strong>(${q.marks}m) [${co}]</strong></li>`;
+  });
   html += '</ol>';
   html += '<h2>SECTION B (30 marks) - 3 questions (5+3+2 each)</h2><ol>';
-  sectionB.forEach((grp, idx)=> {
-    html += `<li>Q${idx+1}:<ul>`;
-    grp.forEach(g=> html += `<li>${g.questionText} (${g.marks}m) (${g.teacherID})</li>`);
+  sectionB.forEach((grp, idx) => {
+    html += `<li>Q${idx + 1}:<ul>`;
+    grp.forEach(g => {
+      const co = getCO(g.teacherID);
+      html += `<li>${g.questionText} (${g.marks}m) [${co}]</li>`;
+    });
     html += '</ul></li>';
   });
   html += '</ol>';
   html += '<h2>SECTION C (30 marks) - 3 questions (5+5 each)</h2><ol>';
-  sectionC.forEach((grp, idx)=> {
-    html += `<li>Q${idx+1}:<ul>`;
-    grp.forEach(g=> html += `<li>${g.questionText} (${g.marks}m) (${g.teacherID})</li>`);
+  sectionC.forEach((grp, idx) => {
+    html += `<li>Q${idx + 1}:<ul>`;
+    grp.forEach(g => {
+      const co = getCO(g.teacherID.email);
+      html += `<li>${g.questionText} (${g.marks}m) [${co}]</li>`;
+    });
     html += '</ul></li>';
   });
   html += '</ol></body></html>';
+
   res.send(html);
 });
 
