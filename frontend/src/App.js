@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import './App.css';
 
 function App(){
   const [token, setToken] = useState(localStorage.getItem('token') || null);
