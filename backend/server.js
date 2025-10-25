@@ -16,7 +16,7 @@ app.use('/api/questions', questionRoutes);
 app.use('/api/paper', paperRoutes);
 
 const PORT = process.env.PORT || 5000;
-const MONGO = process.env.MONGO_URI || 'mongodb://localhost:27017/question_paper_app';
+const MONGO = process.env.MONGO_URI || 'mongodb+srv://Fahim123:Fahim786@cluster0.rattrsg.mongodb.net/QuestionPaper';
 
 mongoose.connect(MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(()=> {
