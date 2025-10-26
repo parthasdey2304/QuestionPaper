@@ -127,9 +127,9 @@ for (let i = 0; i < 3; i++) {
         box-shadow: 0 2px 6px rgba(0,0,0,0.08);
       }
       h3 {
-        border-bottom: 2px solid #007bff;
+        border-bottom: 2px solid #808080ff;
         padding-bottom: 5px;
-        color: #007bff;
+        color: #000000ff;
         font-size: 18px;
       }
       ol {
@@ -156,12 +156,12 @@ for (let i = 0; i < 3; i++) {
   </head>
   <body>
     <header>
-      <h1>Department of Computer Science & Engineering</h1>
-      <h2>Internal Examination - Question Paper</h2>
+      <h1>BTECH CSE_AI</h1>
+      <h2>Question Paper</h2>
     </header>
 
     <section>
-      <h3>SECTION A (20 Marks) — 10 Questions × 2 Marks</h3>
+      <h3>SECTION A (20 Marks)-(10*2) </h3>
       <ol>
         ${sectionA.map(q => `
           <li>${q.questionText} <strong>(${q.marks}m) [${getCO(q.teacherID)}]</strong></li>
@@ -170,7 +170,7 @@ for (let i = 0; i < 3; i++) {
     </section>
 
     <section>
-      <h3>SECTION B (30 Marks) — 3 Questions (5 + 3 + 2 Marks Each)</h3>
+      <h3>SECTION B (30 Marks) — 3 Questions (5 + 3 + 2 )</h3>
       <ol>
         ${sectionB.map((grp, i) => `
           <li>
@@ -184,7 +184,7 @@ for (let i = 0; i < 3; i++) {
     </section>
 
     <section>
-      <h3>SECTION C (30 Marks) — 3 Questions (5 + 5 Marks Each)</h3>
+      <h3>SECTION C (30 Marks) — 3 Questions (5 + 5 )</h3>
       <ol>
         ${sectionC.map((grp, i) => `
           <li>
