@@ -7,10 +7,12 @@ export default function QuestionForm({ token, onSaved, onCheck }){
   const [section, setSection] = useState('A');
   const [msg, setMsg] = useState('');
 
+  const BACKEND_URL = process.env.BACKEND_URL;
+
   const submit = async (e) => {
     e.preventDefault();
     try{
-      const res = await axios.post('http://localhost:5000/api/questions/submit', { questionText, marks: Number(marks), section }, { headers: { Authorization: 'Bearer '+token }});
+      const res = await axios.post(BACKEND_URL + '/api/questions/submit', { questionText, marks: Number(marks), section }, { headers: { Authorization: 'Bearer '+token }});
       setMsg(res.data.message || 'Saved');
       setQuestionText('');
       onSaved();
