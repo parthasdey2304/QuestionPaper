@@ -6,10 +6,12 @@ export default function Login({ onLogin }){
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
 
+  const BACKEND_URL=process.env.BACKEND_URL;
+
   const submit = async (e) => {
     e.preventDefault();
     try{
-      const res = await axios.post('http://localhost:5000/api/auth/login', { teacherID, password });
+      const res = await axios.post(BACKEND_URL + '/api/auth/login', { teacherID, password });
       onLogin(res.data.token, { teacherID: res.data.teacherID, name: res.data.name });
     }catch(err){
       setMsg(err.response?.data?.message || 'Error');
