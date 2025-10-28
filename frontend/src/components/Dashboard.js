@@ -6,6 +6,8 @@ export default function Dashboard({ token, user, onLogout }){
   const [myQuestions, setMyQuestions] = useState([]);
   const [canGenerate, setCanGenerate] = useState(false);
 
+  const BACKEND_URL = process.env.BACKEND_URL;
+
   useEffect(()=> {
     fetchMy();
     checkCan();
@@ -13,14 +15,14 @@ export default function Dashboard({ token, user, onLogout }){
 
   async function fetchMy(){
     try{
-      const res = await axios.get('http://localhost:5000/api/questions/my', { headers: { Authorization: 'Bearer '+token }});
+      const res = await axios.get(BACKEND_URL + '/api/questions/my', { headers: { Authorization: 'Bearer '+token }});
       setMyQuestions(res.data);
     }catch(err){ console.error(err); }
   }
 
   async function checkCan(){
     try{
-      const res = await axios.get('http://localhost:5000/api/paper/can-generate', { headers: { Authorization: 'Bearer '+token }});
+      const res = await axios.get(BACKEND_URL + '/api/paper/can-generate', { headers: { Authorization: 'Bearer '+token }});
       setCanGenerate(res.data.canGenerate);
     }catch(err){ console.error(err); }
   }
@@ -28,7 +30,7 @@ export default function Dashboard({ token, user, onLogout }){
   async function generate(){
     try{
       const win = window.open('about:blank','_blank');
-      const res = await axios.get('http://localhost:5000/api/paper/generate', { headers: { Authorization: 'Bearer '+token }});
+      const res = await axios.get(BACKEND_URL + '/api/paper/generate', { headers: { Authorization: 'Bearer '+token }});
       win.document.write(res.data);
       win.document.close();
     }catch(err){
