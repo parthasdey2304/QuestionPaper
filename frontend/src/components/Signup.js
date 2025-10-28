@@ -7,10 +7,12 @@ export default function Signup(){
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
 
+  const BACKEND_URL = process.env.BACKEND_URL;
+
   const submit = async (e) => {
     e.preventDefault();
     try{
-      const res = await axios.post('http://localhost:5000/api/auth/signup', { teacherID, name, password });
+      const res = await axios.post(BACKEND_URL + '/api/auth/signup', { teacherID, name, password });
       setMsg(res.data.message || 'Created');
     }catch(err){
       setMsg(err.response?.data?.message || 'Error');
